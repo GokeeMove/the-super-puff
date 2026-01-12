@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 检测Aritzia网站上The Super Puff羽绒服Size M的库存情况
+支持 macOS、Linux (Debian/Ubuntu) 等系统
 """
 
 from selenium import webdriver
@@ -9,9 +10,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 import time
 import json
 import os
+import platform
+import sys
 
 def check_stock():
     """
@@ -19,17 +23,32 @@ def check_stock():
     """
     url = "https://www.aritzia.com/intl/en/product/the-super-puff%E2%84%A2/126464.html?color=6038_3"
     
-    # 配置Chrome选项
+    # 检测操作系统
+    system = platform.system()
+    print(f"检测到操作系统: {system}")
+    
+    # 配置Chrome选项（跨平台兼容）
     chrome_options = Options()
     chrome_options.add_argument('--headless=new')  # 无头模式（不显示浏览器窗口）
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')  # Linux必需
+    chrome_options.add_argument('--disable-dev-shm-usage')  # Linux必需，解决共享内存问题
+    chrome_options.add_argument('--disable-gpu')  # Linux headless模式建议禁用GPU
+    chrome_options.add_argument('--disable-software-rasterizer')  # 禁用软件光栅化
     chrome_options.add_argument('--disable-blink-features=AutomationControlled')
     chrome_options.add_argument('--window-size=1920,1080')  # 设置窗口大小
+    chrome_options.add_argument('--disable-extensions')  # 禁用扩展
+    chrome_options.add_argument('--disable-setuid-sandbox')  # Linux沙箱设置
+    chrome_options.add_argument('--single-process')  # Linux单进程模式
+    
+    # 根据系统设置User-Agent
+    if system == 'Linux':
+        user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    else:
+        user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    
+    chrome_options.add_argument(f'user-agent={user_agent}')
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     chrome_options.add_experimental_option('useAutomationExtension', False)
-    chrome_options.add_argument('user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
     
     print("使用无界面模式运行...")
     

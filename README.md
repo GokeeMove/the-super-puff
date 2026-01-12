@@ -8,17 +8,43 @@
 - 支持自动解析网页内容
 - 提供详细的调试信息
 
-## 安装
+## 系统要求
+
+- Python 3.9+
+- Google Chrome 浏览器
+- ChromeDriver
+- 支持系统：macOS、Linux (Debian/Ubuntu)
+
+## 快速安装（推荐）
+
+### Linux (Debian/Ubuntu/Debian sid)
+
+```bash
+# 下载项目后，运行自动安装脚本
+bash install_linux.sh
+
+# 安装完成后运行
+./run.sh
+```
+
+安装脚本会自动完成：
+- 安装Python和必要工具
+- 安装Chrome浏览器
+- 安装ChromeDriver
+- 创建虚拟环境
+- 安装Python依赖
+
+## 手动安装
 
 ### 1. 创建Python虚拟环境
 
-由于macOS的Python环境受系统保护，建议使用虚拟环境：
+建议使用虚拟环境：
 
 ```bash
 # 创建虚拟环境
 python3 -m venv venv
 
-# 激活虚拟环境
+# 激活虚拟环境 (macOS/Linux)
 source venv/bin/activate
 ```
 
@@ -28,16 +54,38 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. 安装ChromeDriver
+### 3. 安装Chrome和ChromeDriver
 
-程序使用Selenium和Chrome浏览器，需要安装ChromeDriver：
+#### macOS (使用Homebrew)
 
-**macOS (使用Homebrew):**
 ```bash
+# 安装ChromeDriver
 brew install chromedriver
 ```
 
-**或者手动下载:**
+#### Linux (Debian/Ubuntu)
+
+```bash
+# 更新包列表
+sudo apt update
+
+# 安装Chrome浏览器
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb
+
+# 安装ChromeDriver
+sudo apt install chromium-chromedriver
+
+# 或者手动安装最新版本
+CHROME_DRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
+wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
+sudo mv chromedriver /usr/local/bin/chromedriver
+sudo chmod +x /usr/local/bin/chromedriver
+```
+
+#### 手动下载（所有系统）
+
 1. 访问 https://chromedriver.chromium.org/downloads
 2. 下载与你的Chrome版本匹配的ChromeDriver
 3. 将chromedriver添加到系统PATH
@@ -97,3 +145,26 @@ python check_stock.py
 
 - selenium: 浏览器自动化工具
 - ChromeDriver: Chrome浏览器驱动（需单独安装）
+
+## 项目结构
+
+```
+the-super-puff/
+├── check_stock.py          # 主程序
+├── requirements.txt        # Python依赖
+├── README.md              # 项目说明（英文）
+├── 使用说明.md             # 使用说明（中文）
+├── INSTALL_LINUX.md       # Linux安装指南
+├── CHANGELOG.md           # 更新日志
+├── install_linux.sh       # Linux自动安装脚本
+├── run.sh                 # 快速运行脚本
+└── venv/                  # Python虚拟环境
+```
+
+## 更新日志
+
+查看 [CHANGELOG.md](CHANGELOG.md) 了解版本更新历史。
+
+## 许可证
+
+本项目仅供学习和个人使用，请勿用于商业目的或频繁请求。

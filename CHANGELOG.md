@@ -1,5 +1,29 @@
 # 更新日志
 
+## v2.1 - 2026-01-12
+
+### 🔐 Root用户支持
+
+**新增功能：**
+- ✅ 完全支持Linux root用户运行
+- ✅ 自动检测root用户并应用对应配置
+- ✅ 安装脚本智能识别root/普通用户权限
+- ✅ Root用户专用Chrome安全配置
+
+**代码改进：**
+- 添加 `os.geteuid()` 检测root用户
+- Root用户自动添加必要的Chrome参数：
+  - `--disable-web-security` - 禁用Web安全检查
+  - `--allow-running-insecure-content` - 允许不安全内容
+- 安装脚本使用 `$SUDO_CMD` 变量适配不同用户
+
+**文档更新：**
+- INSTALL_LINUX.md添加Root用户特别说明
+- 使用说明添加Root用户运行示例
+- README添加Root用户说明
+
+---
+
 ## v2.0 - 2026-01-12
 
 ### 🎯 跨平台支持

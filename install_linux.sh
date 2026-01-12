@@ -12,9 +12,11 @@ echo ""
 
 # 检查是否为root用户
 if [ "$EUID" -eq 0 ]; then 
-    echo "⚠️  请不要使用root用户运行此脚本"
-    echo "   使用普通用户运行，需要sudo权限时会提示"
-    exit 1
+    echo "⚠️  检测到root用户运行"
+    echo "   将以root权限安装（跳过sudo）"
+    SUDO_CMD=""
+else
+    SUDO_CMD="sudo"
 fi
 
 # 检查系统
@@ -28,12 +30,12 @@ fi
 # 1. 更新系统包
 echo ""
 echo "步骤 1/5: 更新系统包列表..."
-sudo apt update
+$SUDO_CMD apt update
 
 # 2. 安装Python和必要工具
 echo ""
 echo "步骤 2/5: 安装Python和依赖..."
-sudo apt install -y python3 python3-pip python3-venv wget unzip
+$SUDO_CMD apt install -y python3 python3-pip python3-venv wget unzip
 
 # 3. 安装Chrome浏览器
 echo ""
@@ -41,7 +43,7 @@ echo "步骤 3/5: 安装Chrome浏览器..."
 if ! command -v google-chrome &> /dev/null; then
     echo "下载Chrome浏览器..."
     wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb
-    sudo apt install -y /tmp/chrome.deb
+    $SUDO_CMD apt install -y /tmp/chrome.deb
     rm /tmp/chrome.deb
     echo "✓ Chrome安装完成"
 else
@@ -57,7 +59,7 @@ echo ""
 echo "步骤 4/5: 安装ChromeDriver..."
 if ! command -v chromedriver &> /dev/null; then
     # 先尝试apt安装
-    if sudo apt install -y chromium-chromedriver 2>/dev/null; then
+    if $SUDO_CMD apt install -y chromium-chromedriver 2>/dev/null; then
         echo "✓ ChromeDriver (通过apt安装)"
     else
         # 手动下载安装
@@ -66,8 +68,8 @@ if ! command -v chromedriver &> /dev/null; then
         echo "下载ChromeDriver版本: $DRIVER_VERSION"
         wget -q "https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip" -O /tmp/chromedriver.zip
         unzip -q /tmp/chromedriver.zip -d /tmp/
-        sudo mv /tmp/chromedriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
+        $SUDO_CMD mv /tmp/chromedriver /usr/local/bin/
+        $SUDO_CMD chmod +x /usr/local/bin/chromedriver
         rm /tmp/chromedriver.zip
         echo "✓ ChromeDriver安装完成"
     fi

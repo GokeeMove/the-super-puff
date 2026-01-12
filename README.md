@@ -20,7 +20,7 @@
 ### Linux (Debian/Ubuntu/Debian sid)
 
 ```bash
-# 下载项目后，运行自动安装脚本
+# 下载项目后，运行自动安装脚本（root和普通用户都支持）
 bash install_linux.sh
 
 # 安装完成后运行
@@ -28,11 +28,14 @@ bash install_linux.sh
 ```
 
 安装脚本会自动完成：
-- 安装Python和必要工具
-- 安装Chrome浏览器
-- 安装ChromeDriver
-- 创建虚拟环境
-- 安装Python依赖
+- ✅ 自动检测用户权限（root/普通用户）
+- ✅ 安装Python和必要工具
+- ✅ 安装Chrome浏览器
+- ✅ 安装ChromeDriver
+- ✅ 创建虚拟环境
+- ✅ 安装Python依赖
+
+**Root用户说明：** 脚本会自动检测root用户并跳过sudo命令，直接使用root权限安装。程序运行时也会自动添加root用户所需的Chrome安全配置。
 
 ## 手动安装
 

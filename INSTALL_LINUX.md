@@ -2,20 +2,30 @@
 
 适用于 Debian、Ubuntu、Debian sid (forky) 等系统
 
+**支持root用户和普通用户运行**
+
 ## 方法一：自动安装（推荐）
 
 ```bash
 # 1. 下载或克隆项目
 cd the-super-puff
 
-# 2. 运行自动安装脚本
+# 2. 运行自动安装脚本（root用户和普通用户都可以）
 bash install_linux.sh
 
 # 3. 运行程序
 ./run.sh
 ```
 
-就这么简单！安装脚本会自动完成所有配置。
+就这么简单！安装脚本会自动检测用户权限并完成所有配置。
+
+### Root用户说明
+
+如果你是root用户，脚本会：
+- ✅ 自动检测并跳过sudo命令
+- ✅ 直接使用root权限安装
+- ✅ 添加必要的Chrome安全配置
+- ✅ 无需任何额外操作
 
 ## 方法二：手动安装
 
@@ -37,14 +47,21 @@ sudo apt install ./google-chrome-stable_current_amd64.deb
 
 ```bash
 # 方法A: 使用apt（简单但版本可能较旧）
+# root用户
+apt install chromium-chromedriver
+# 普通用户
 sudo apt install chromium-chromedriver
 
 # 方法B: 手动下载最新版本（推荐）
 DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
 wget "https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip"
 unzip chromedriver_linux64.zip
+# root用户直接移动
 mv chromedriver /usr/local/bin/
 chmod +x /usr/local/bin/chromedriver
+# 普通用户需要sudo
+# sudo mv chromedriver /usr/local/bin/
+# sudo chmod +x /usr/local/bin/chromedriver
 rm chromedriver_linux64.zip
 ```
 
@@ -150,6 +167,40 @@ Debian sid是Debian的不稳定版本，代码已针对该系统进行优化：
 - ✅ 使用适合Linux的Chrome选项
 - ✅ 包含所有必要的沙箱和GPU设置
 - ✅ 无需任何额外配置
+
+## Root用户特别说明
+
+如果你的环境直接使用root用户，程序已完全支持：
+
+### 自动检测
+程序会自动检测是否为root用户，并应用对应配置：
+```python
+if os.geteuid() == 0:
+    # 自动添加root用户所需的Chrome参数
+    --no-sandbox
+    --disable-setuid-sandbox
+    --disable-web-security
+```
+
+### 安装脚本
+`install_linux.sh` 会自动识别root用户：
+- ✅ 跳过sudo命令
+- ✅ 直接使用root权限
+- ✅ 无需修改任何代码
+
+### 运行建议
+虽然程序支持root运行，但出于安全考虑：
+- 在开发/测试环境可以直接使用root
+- 在生产环境建议创建专用用户
+- 容器环境（Docker等）中使用root是常见做法
+
+### Root用户运行示例
+```bash
+# 以root身份运行
+cd /root/the-super-puff
+bash install_linux.sh  # 自动检测root用户
+./run.sh              # 直接运行
+```
 
 ## 测试安装
 

@@ -30,15 +30,23 @@ def check_stock():
     # 配置Chrome选项（跨平台兼容）
     chrome_options = Options()
     chrome_options.add_argument('--headless=new')  # 无头模式（不显示浏览器窗口）
-    chrome_options.add_argument('--no-sandbox')  # Linux必需
+    chrome_options.add_argument('--no-sandbox')  # Linux必需，root用户必须
     chrome_options.add_argument('--disable-dev-shm-usage')  # Linux必需，解决共享内存问题
     chrome_options.add_argument('--disable-gpu')  # Linux headless模式建议禁用GPU
     chrome_options.add_argument('--disable-software-rasterizer')  # 禁用软件光栅化
     chrome_options.add_argument('--disable-blink-features=AutomationControlled')
     chrome_options.add_argument('--window-size=1920,1080')  # 设置窗口大小
     chrome_options.add_argument('--disable-extensions')  # 禁用扩展
-    chrome_options.add_argument('--disable-setuid-sandbox')  # Linux沙箱设置
-    chrome_options.add_argument('--single-process')  # Linux单进程模式
+    chrome_options.add_argument('--disable-setuid-sandbox')  # Linux沙箱设置，root用户必须
+    
+    # Linux系统额外配置
+    if system == 'Linux':
+        chrome_options.add_argument('--single-process')  # Linux单进程模式
+        # 检查是否为root用户
+        if os.geteuid() == 0:
+            print("检测到root用户，添加额外的安全配置...")
+            chrome_options.add_argument('--disable-web-security')  # root用户运行需要
+            chrome_options.add_argument('--allow-running-insecure-content')  # 允许不安全内容
     
     # 根据系统设置User-Agent
     if system == 'Linux':

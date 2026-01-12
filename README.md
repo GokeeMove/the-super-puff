@@ -155,13 +155,28 @@ python check_stock.py
 the-super-puff/
 ├── check_stock.py          # 主程序
 ├── requirements.txt        # Python依赖
-├── README.md              # 项目说明（英文）
+├── README.md              # 项目说明
 ├── 使用说明.md             # 使用说明（中文）
 ├── INSTALL_LINUX.md       # Linux安装指南
+├── TROUBLESHOOTING.md     # 故障排除指南
 ├── CHANGELOG.md           # 更新日志
 ├── install_linux.sh       # Linux自动安装脚本
+├── fix_chromedriver.sh    # ChromeDriver依赖修复脚本
+├── fix_dpkg.sh            # dpkg错误修复脚本
+├── test_env.sh            # 环境检测脚本
 ├── run.sh                 # 快速运行脚本
 └── venv/                  # Python虚拟环境
+```
+
+## 故障排除
+
+遇到问题？查看详细的 [故障排除指南](TROUBLESHOOTING.md)
+
+**快速修复命令：**
+```bash
+bash test_env.sh              # 检测环境
+bash fix_chromedriver.sh      # 修复ChromeDriver依赖（状态码127错误）
+bash fix_dpkg.sh              # 修复dpkg错误
 ```
 
 ## 更新日志

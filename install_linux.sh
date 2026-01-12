@@ -35,7 +35,36 @@ $SUDO_CMD apt update
 # 2. 安装Python和必要工具
 echo ""
 echo "步骤 2/5: 安装Python和依赖..."
-$SUDO_CMD apt install -y python3 python3-pip python3-venv wget unzip
+$SUDO_CMD apt install -y python3 python3-pip python3-venv wget unzip curl
+
+# 2.1 安装Chrome/ChromeDriver所需的系统库
+echo "安装Chrome运行所需的系统库..."
+$SUDO_CMD apt install -y \
+    libnss3 \
+    libgconf-2-4 \
+    libfontconfig1 \
+    libxss1 \
+    libappindicator1 \
+    libappindicator3-1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libcups2 \
+    libdbus-1-3 \
+    libdrm2 \
+    libgbm1 \
+    libgtk-3-0 \
+    libnspr4 \
+    libu2f-udev \
+    libvulkan1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxfixes3 \
+    libxkbcommon0 \
+    libxrandr2 \
+    xdg-utils \
+    fonts-liberation \
+    2>/dev/null || echo "部分依赖包可能不可用，继续..."
 
 # 3. 安装Chrome浏览器
 echo ""

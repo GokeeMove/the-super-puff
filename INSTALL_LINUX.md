@@ -110,6 +110,36 @@ xvfb-run python3 check_stock.py
 
 ## 常见问题
 
+### ChromeDriver错误 (状态码127)
+
+**错误信息：**
+```
+Service /root/.cache/selenium/chromedriver/linux64/.../chromedriver unexpectedly exited. Status code was: 127
+```
+
+**原因：** ChromeDriver缺少必要的系统依赖库
+
+**快速修复（推荐）：**
+```bash
+bash fix_chromedriver.sh
+```
+
+**手动修复：**
+```bash
+# 安装所有必要的依赖库
+apt install -y \
+    libnss3 libgconf-2-4 libfontconfig1 libxss1 \
+    libappindicator1 libasound2 libatk-bridge2.0-0 \
+    libatk1.0-0 libcups2 libdbus-1-3 libdrm2 \
+    libgbm1 libgtk-3-0 libnspr4 libxcomposite1 \
+    libxdamage1 libxfixes3 libxkbcommon0 libxrandr2 \
+    xdg-utils fonts-liberation
+
+# 清理Selenium缓存
+rm -rf /root/.cache/selenium/chromedriver
+rm -rf ~/.cache/selenium/chromedriver
+```
+
 ### Chrome启动失败
 
 ```bash

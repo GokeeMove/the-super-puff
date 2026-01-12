@@ -1,0 +1,7 @@
+{
+    "explorer.confirmDelete": false,
+    "cursor.general.disableHttp2": true,
+    "http.proxy": "http://127.0.0.1:8889",
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "python.createEnvironment.trigger": "off"
+}

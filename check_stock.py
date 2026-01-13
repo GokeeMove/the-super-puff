@@ -121,9 +121,6 @@ def check_stock():
                                 
                                 time.sleep(3)  # 等待下拉菜单展开
                                 
-                                # 截图
-                                driver.save_screenshot('dropdown_opened.png')
-                                
                                 # 查找Size M选项
                                 size_options = driver.find_elements(By.XPATH, "//*")
                                 visible_options = [opt for opt in size_options if opt.is_displayed() and len(opt.text.strip()) <= 20]
@@ -236,16 +233,11 @@ def check_stock():
                         stock_status = "无货"
                         print(f"\n❌ Size M 无货")
                     
-                    driver.save_screenshot('page_screenshot_after_click.png')
-                    
                 except Exception as e:
                     pass
             else:
                 if not stock_status:
                     print("\n⚠️  未能确定Size M库存状态")
-            
-            # 保存截图供参考
-            driver.save_screenshot('page_screenshot.png')
             
         except TimeoutException:
             print("⚠️  页面加载超时")

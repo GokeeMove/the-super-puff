@@ -100,15 +100,19 @@ elif 'in stock' in parent_lower:
     stock_status = "有货"
 ```
 
-## 查看截图
+## 查看检测详情
 
-程序会保存截图，可以手动查看：
+程序会实时显示找到的文本：
 
 ```bash
-# 查看下拉菜单截图
-open dropdown_opened.png  # macOS
-xdg-open dropdown_opened.png  # Linux
+./run.sh
+
+# 输出示例：
+# 找到Size M，完整文本: 'M
+# 1 Left'
 ```
+
+根据显示的文本可以判断检测是否正确。
 
 ## 实时监控示例
 

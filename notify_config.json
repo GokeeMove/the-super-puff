@@ -1,0 +1,7 @@
+{
+  "method": "serverchan",
+  "server_chan_key": "",
+  "wecom_webhook": "",
+  "pushplus_token": "",
+  "comment": "推送方式: serverchan (推荐) | wecom (企业微信) | pushplus | none (不推送)"
+}

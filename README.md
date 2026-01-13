@@ -136,6 +136,35 @@ tail -f monitor.log
 bash stop_monitor.sh
 ```
 
+### 📱 微信推送（可选）
+
+**有货时自动推送微信通知！**
+
+1. **配置推送（推荐 Server酱，完全免费）**
+   ```bash
+   # 1. 访问 https://sct.ftqq.com/ 获取 SendKey
+   # 2. 编辑配置文件
+   vi notify_config.json
+   
+   # 填入你的密钥：
+   {
+     "method": "serverchan",
+     "server_chan_key": "你的SendKey"
+   }
+   ```
+
+2. **测试推送**
+   ```bash
+   python3 wechat_notify.py
+   ```
+
+3. **开始监控**
+   ```bash
+   bash monitor_background.sh
+   ```
+
+详细配置请查看: [微信推送配置指南](WECHAT_NOTIFY_SETUP.md)
+
 程序会：
 1. 启动Chrome浏览器（**无界面模式，后台运行**）
 2. 访问The Super Puff商品页面
@@ -190,11 +219,15 @@ bash stop_monitor.sh
 
 ```
 the-super-puff/
-├── check_stock.py          # 主程序（支持--loop参数）
+├── check_stock.py          # 主程序（支持--loop参数，集成微信推送）
+├── wechat_notify.py        # 微信推送模块
+├── notify_config.json      # 微信推送配置文件
 ├── requirements.txt        # Python依赖
 ├── README.md              # 项目说明
 ├── 使用说明.md             # 使用说明（中文）
 ├── QUICKSTART.md          # 快速开始指南
+├── WECHAT_NOTIFY_SETUP.md # 微信推送配置指南 📱
+├── MONITOR_GUIDE.md       # 持续监控使用指南
 ├── INSTALL_LINUX.md       # Linux安装指南
 ├── TROUBLESHOOTING.md     # 故障排除指南
 ├── STOCK_STATUS_GUIDE.md  # 库存状态检测说明

@@ -117,6 +117,18 @@ tail -f monitor.log           # 查看日志
 bash stop_monitor.sh          # 停止
 ```
 
+### 📱 微信推送
+```bash
+# 一键配置（推荐）
+bash setup_wechat.sh
+
+# 手动配置
+vi notify_config.json         # 编辑配置
+python3 wechat_notify.py      # 测试推送
+```
+
+详细说明: [WECHAT_NOTIFY_SETUP.md](WECHAT_NOTIFY_SETUP.md)
+
 ### 维护命令
 ```bash
 bash test_env.sh              # 检查环境

@@ -2,6 +2,7 @@
 """
 检测Aritzia网站上The Super Puff羽绒服Size M的库存情况
 支持 macOS、Linux (Debian/Ubuntu) 等系统
+集成微信推送功能
 """
 
 from selenium import webdriver
@@ -16,6 +17,14 @@ import json
 import os
 import platform
 import sys
+
+# 导入微信推送模块
+try:
+    from wechat_notify import send_stock_alert
+    NOTIFY_ENABLED = True
+except ImportError:
+    NOTIFY_ENABLED = False
+    print("⚠️  微信推送模块未找到，将不发送通知")
 
 def check_stock():
     """
@@ -174,8 +183,19 @@ def check_stock():
                                                     print(f"\n✅✅✅ Size M 有货! ✅✅✅")
                                                     if '1 left' in parent_lower:
                                                         print(f"    (仅剩1件！)")
+                                                        stock_detail = "仅剩1件"
                                                     else:
                                                         print(f"    (只剩少量)")
+                                                        stock_detail = "只剩少量"
+                                                    
+                                                    # 发送微信推送
+                                                    if NOTIFY_ENABLED:
+                                                        print("正在发送微信推送...")
+                                                        try:
+                                                            send_stock_alert("The Super Puff Size M", stock_detail)
+                                                        except Exception as notify_error:
+                                                            print(f"⚠️  推送失败: {notify_error}")
+                                                    
                                                     size_m_button = option
                                                     break
                                                 elif 'left' in parent_lower or 'available' in parent_lower:
@@ -183,6 +203,15 @@ def check_stock():
                                                     stock_status = "有货"
                                                     print(f"\n✅✅✅ Size M 有货! ✅✅✅")
                                                     print(f"    (库存信息: {parent_text})")
+                                                    
+                                                    # 发送微信推送
+                                                    if NOTIFY_ENABLED:
+                                                        print("正在发送微信推送...")
+                                                        try:
+                                                            send_stock_alert("The Super Puff Size M", f"有货 ({parent_text})")
+                                                        except Exception as notify_error:
+                                                            print(f"⚠️  推送失败: {notify_error}")
+                                                    
                                                     size_m_button = option
                                                     break
                                                 else:
@@ -224,7 +253,16 @@ def check_stock():
                             add_button = driver.find_element(selector_type, selector_value)
                             if add_button.is_displayed() and add_button.is_enabled():
                                 stock_status = "有货"
-                                print(f"\n✅ Size M 有货!")
+                                print(f"\n✅✅✅ Size M 有货! ✅✅✅")
+                                
+                                # 发送微信推送
+                                if NOTIFY_ENABLED:
+                                    print("正在发送微信推送...")
+                                    try:
+                                        send_stock_alert("The Super Puff Size M", "有货")
+                                    except Exception as notify_error:
+                                        print(f"⚠️  推送失败: {notify_error}")
+                                
                                 break
                         except:
                             continue

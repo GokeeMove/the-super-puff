@@ -21,7 +21,7 @@ def check_stock():
     """
     检查指定商品的Size M库存状态
     """
-    url = "https://www.aritzia.com/intl/en/product/the-super-puff%E2%84%A2/126464.html?color=6038_3"
+    url = "https://www.aritzia.com/intl/en/product/the-super-puff%E2%84%A2/126464.html?color=1275_1"
     
     # 检测操作系统
     system = platform.system()
@@ -154,20 +154,38 @@ def check_stock():
                                                 parent = option.find_element(By.XPATH, "..")
                                                 parent_text = parent.text
                                                 
-                                                # 检查是否包含无货信息
-                                                if 'sold out' in parent_text.lower():
+                                                # 显示找到的尺码信息（调试用）
+                                                print(f"\n找到Size M，完整文本: '{parent_text}'")
+                                                
+                                                # 检查是否包含库存信息
+                                                parent_lower = parent_text.lower()
+                                                
+                                                # 检查无货状态
+                                                if 'sold out' in parent_lower:
                                                     stock_status = "无货"
                                                     print(f"\n❌ Size M 无货 (Sold Out Online)")
                                                     size_m_button = None
                                                     break
-                                                elif 'out of stock' in parent_text.lower():
+                                                elif 'out of stock' in parent_lower:
                                                     stock_status = "无货"
                                                     print(f"\n❌ Size M 无货 (Out of Stock)")
                                                     size_m_button = None
                                                     break
-                                                elif 'only a few left' in parent_text.lower():
+                                                # 检查有货状态
+                                                elif 'only a few left' in parent_lower or '1 left' in parent_lower:
                                                     stock_status = "有货"
-                                                    print(f"\n✅ Size M 有货! (只剩少量)")
+                                                    print(f"\n✅✅✅ Size M 有货! ✅✅✅")
+                                                    if '1 left' in parent_lower:
+                                                        print(f"    (仅剩1件！)")
+                                                    else:
+                                                        print(f"    (只剩少量)")
+                                                    size_m_button = option
+                                                    break
+                                                elif 'left' in parent_lower or 'available' in parent_lower:
+                                                    # 包含"left"或"available"通常表示有货
+                                                    stock_status = "有货"
+                                                    print(f"\n✅✅✅ Size M 有货! ✅✅✅")
+                                                    print(f"    (库存信息: {parent_text})")
                                                     size_m_button = option
                                                     break
                                                 else:

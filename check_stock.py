@@ -21,7 +21,7 @@ def check_stock():
     """
     检查指定商品的Size M库存状态
     """
-    url = "https://www.aritzia.com/intl/en/product/the-super-puff%E2%84%A2/126464.html?color=1275_1"
+    url = "https://www.aritzia.com/intl/en/product/the-super-puff%E2%84%A2/126464.html?color=6038_3"
     
     # 检测操作系统
     system = platform.system()

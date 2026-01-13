@@ -100,21 +100,29 @@ Sold Out Online'
 
 ## 🎯 常用命令
 
+### 单次检测
 ```bash
-# 运行程序
 ./run.sh
+```
 
-# 检查环境
-bash test_env.sh
+### 持续监控（每30分钟）
+```bash
+# 前台运行（可看输出）
+./monitor.sh
 
-# 修复ChromeDriver
-bash fix_chromedriver.sh
+# 后台运行（推荐）
+bash monitor_background.sh    # 启动
+bash status_monitor.sh        # 查看状态
+tail -f monitor.log           # 查看日志
+bash stop_monitor.sh          # 停止
+```
 
-# 修复dpkg
-bash fix_dpkg.sh
-
-# 重新安装
-bash install_linux.sh
+### 维护命令
+```bash
+bash test_env.sh              # 检查环境
+bash fix_chromedriver.sh      # 修复ChromeDriver
+bash fix_dpkg.sh              # 修复dpkg
+bash install_linux.sh         # 重新安装
 ```
 
 ---

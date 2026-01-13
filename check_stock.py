@@ -254,12 +254,62 @@ def check_stock():
             driver.quit()
 
 if __name__ == "__main__":
-    print("\n" + "=" * 60)
-    print("  The Super Puff 库存检测工具 - Size M")
-    print("=" * 60)
+    import sys
+    from datetime import datetime
     
-    check_stock()
+    # 检查是否有--loop参数
+    loop_mode = "--loop" in sys.argv or "-l" in sys.argv
     
-    print("\n" + "=" * 60)
-    print("  检测完成")
-    print("=" * 60 + "\n")
+    if loop_mode:
+        print("\n" + "=" * 60)
+        print("  The Super Puff 持续监控模式")
+        print("  每30分钟检测一次")
+        print("  按 Ctrl+C 停止")
+        print("=" * 60 + "\n")
+        
+        check_count = 0
+        while True:
+            check_count += 1
+            print(f"\n{'=' * 60}")
+            print(f"  第 {check_count} 次检测 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            print("=" * 60)
+            
+            try:
+                check_stock()
+            except KeyboardInterrupt:
+                print("\n\n" + "=" * 60)
+                print("  已停止监控")
+                print(f"  总共检测了 {check_count} 次")
+                print("=" * 60 + "\n")
+                sys.exit(0)
+            except Exception as e:
+                print(f"\n⚠️  检测出错: {e}")
+                print("等待下次检测...")
+            
+            print("\n" + "=" * 60)
+            print("  等待30分钟后进行下次检测...")
+            print("  (按 Ctrl+C 可随时停止)")
+            print("=" * 60)
+            
+            try:
+                # 等待30分钟 (1800秒)
+                time.sleep(1800)
+            except KeyboardInterrupt:
+                print("\n\n" + "=" * 60)
+                print("  已停止监控")
+                print(f"  总共检测了 {check_count} 次")
+                print("=" * 60 + "\n")
+                sys.exit(0)
+    else:
+        # 单次检测模式
+        print("\n" + "=" * 60)
+        print("  The Super Puff 库存检测工具 - Size M")
+        print("=" * 60)
+        
+        check_stock()
+        
+        print("\n" + "=" * 60)
+        print("  检测完成")
+        print("=" * 60)
+        print("\n💡 提示: 使用 --loop 或 -l 参数启用持续监控模式")
+        print("   示例: python3 check_stock.py --loop\n")

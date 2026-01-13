@@ -95,14 +95,45 @@ sudo chmod +x /usr/local/bin/chromedriver
 
 ## 使用方法
 
-运行程序：
+### 单次检测
 
 ```bash
 # 确保虚拟环境已激活
 source venv/bin/activate
 
-# 运行程序
-python check_stock.py
+# 运行单次检测
+python3 check_stock.py
+
+# 或使用快捷脚本
+./run.sh
+```
+
+### 持续监控（每30分钟检测一次）
+
+**方式1: 前台运行（推荐用于测试）**
+```bash
+# 前台运行，可以看到实时输出
+./monitor.sh
+
+# 或
+python3 check_stock.py --loop
+
+# 按 Ctrl+C 停止
+```
+
+**方式2: 后台运行（推荐用于长期监控）**
+```bash
+# 启动后台监控
+bash monitor_background.sh
+
+# 查看状态
+bash status_monitor.sh
+
+# 查看实时日志
+tail -f monitor.log
+
+# 停止监控
+bash stop_monitor.sh
 ```
 
 程序会：
@@ -159,19 +190,28 @@ python check_stock.py
 
 ```
 the-super-puff/
-├── check_stock.py          # 主程序
+├── check_stock.py          # 主程序（支持--loop参数）
 ├── requirements.txt        # Python依赖
 ├── README.md              # 项目说明
 ├── 使用说明.md             # 使用说明（中文）
+├── QUICKSTART.md          # 快速开始指南
 ├── INSTALL_LINUX.md       # Linux安装指南
 ├── TROUBLESHOOTING.md     # 故障排除指南
+├── STOCK_STATUS_GUIDE.md  # 库存状态检测说明
 ├── CHANGELOG.md           # 更新日志
+├── run.sh                 # 快速运行（单次检测）
+├── monitor.sh             # 持续监控（前台）
+├── monitor_background.sh  # 后台监控启动脚本
+├── stop_monitor.sh        # 停止后台监控
+├── status_monitor.sh      # 查看监控状态
 ├── install_linux.sh       # Linux自动安装脚本
-├── fix_chromedriver.sh    # ChromeDriver依赖修复脚本
-├── fix_dpkg.sh            # dpkg错误修复脚本
-├── test_env.sh            # 环境检测脚本
-├── run.sh                 # 快速运行脚本
-└── venv/                  # Python虚拟环境 
+├── install_chrome_only.sh # 绕过dpkg问题的安装
+├── fix_chromedriver.sh    # ChromeDriver依赖修复
+├── fix_dpkg.sh            # dpkg错误修复
+├── force_fix_dpkg.sh      # 强制dpkg修复
+├── test_env.sh            # 环境检测
+├── test_detection.py      # 测试检测逻辑
+└── venv/                  # Python虚拟环境
 ```
 
 ## 故障排除

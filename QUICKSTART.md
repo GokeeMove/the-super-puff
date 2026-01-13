@@ -19,14 +19,21 @@ bash install_linux.sh
 
 ## ⚠️ 遇到错误？
 
+### dpkg依赖错误（最常见）
+```bash
+# 方案1: 常规修复
+bash fix_dpkg.sh
+
+# 方案2: 绕过dpkg问题（推荐！）
+bash install_chrome_only.sh
+
+# 方案3: 强制修复
+bash force_fix_dpkg.sh
+```
+
 ### ChromeDriver错误（状态码127）
 ```bash
 bash fix_chromedriver.sh
-```
-
-### dpkg/systemd错误
-```bash
-bash fix_dpkg.sh
 ```
 
 ### 检查环境

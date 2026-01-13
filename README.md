@@ -165,7 +165,7 @@ the-super-puff/
 ├── fix_dpkg.sh            # dpkg错误修复脚本
 ├── test_env.sh            # 环境检测脚本
 ├── run.sh                 # 快速运行脚本
-└── venv/                  # Python虚拟环境
+└── venv/                  # Python虚拟环境 
 ```
 
 ## 故障排除

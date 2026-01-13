@@ -52,26 +52,54 @@ rm -rf /root/.cache/selenium/chromedriver
 
 ---
 
-### ❌ 错误2: dpkg错误
+### ❌ 错误2: dpkg依赖链错误
 
 **错误信息：**
 ```
-dpkg: error processing package systemd (--configure)
+Failed to copy permissions from /etc/group to /etc/.#group...
+dpkg: error processing package dbus-system-bus-common (--configure)
+dpkg: dependency problems prevent configuration of dbus...
 Error: Sub-process /usr/bin/dpkg returned an error code (1)
 ```
 
-**原因：** Debian包管理系统配置中断
+**原因：** Debian包管理系统依赖链断裂（常见于Debian sid/unstable）
 
-**解决方案：**
+**解决方案（按顺序尝试）：**
+
+**方案1: 常规修复**
 ```bash
-# 运行修复脚本
 bash fix_dpkg.sh
-
-# 或手动修复
-dpkg --configure -a
-apt-get install -f
-apt-get update
 ```
+
+**方案2: 强制修复（如果方案1失败）**
+```bash
+bash force_fix_dpkg.sh
+```
+
+**方案3: 绕过dpkg问题，直接安装Chrome（推荐）**
+```bash
+# 这个方法会忽略dpkg错误，直接安装必要组件
+bash install_chrome_only.sh
+```
+
+**方案4: 手动修复**
+```bash
+# 修复权限
+chmod 755 /etc
+chmod 644 /etc/group /etc/passwd
+rm -f /etc/.#*
+
+# 强制配置
+dpkg --configure -a --force-all
+
+# 修复依赖
+apt-get install -f -y
+```
+
+**重要提示：**
+- dpkg的dbus错误通常不影响Chrome运行
+- 可以忽略这些错误，直接运行程序
+- 使用 `install_chrome_only.sh` 可以绕过所有dpkg问题
 
 ---
 
